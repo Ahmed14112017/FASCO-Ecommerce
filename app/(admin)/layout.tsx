@@ -1,12 +1,15 @@
 import { ReactNode } from "react";
-import Navbar from "../components/layout/Navbar/Navbar";
 import AdminNavbar from "../components/layout/AdminNavbar/AdminNavbar";
+import Sidbar from "../components/layout/Sidbar/Sidbar";
 
 export default function Adminlayout({ children }: { children: ReactNode }) {
   return (
-    <div>
-      <AdminNavbar />
-      {children}
+    <div className="flex ">
+      <Sidbar />
+      <div className="flex flex-1 flex-col w-full">
+        <AdminNavbar />
+        {children}
+      </div>
     </div>
   );
 }

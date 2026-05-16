@@ -4,15 +4,19 @@ import Dropdown from "../../ui/Dropdown/Dropdown";
 import { jwtDecode } from "jwt-decode";
 import cookies from "js-cookie";
 import { decodedtoken } from "@/types/auth";
+import { useEffect, useState } from "react";
 
 export default function AdminNavbar() {
-  const token = cookies.get("token");
+  const [decoded, setDecoded] = useState<decodedtoken | null>(null);
 
-  let decoded: decodedtoken | null = null;
+  useEffect(() => {
+    const token = cookies.get("token");
 
-  if (token) {
-    decoded = jwtDecode<decodedtoken>(token);
-  }
+    if (token) {
+      const data = jwtDecode<decodedtoken>(token);
+      setDecoded(data);
+    }
+  }, []);
   return (
     <div>
       <header className="py-3 px-6 sticky z-50 top-0 bg-white border-b border-gray-100">
