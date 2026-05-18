@@ -5,18 +5,20 @@ import Model from "@/app/components/ui/model/Model";
 import {
   CreateGategory,
   DeleteGategory,
-  GetGategory,
-} from "@/lib/api/categories";
-import { useCategory } from "@/lib/hooks/usegategory";
-import { AddCatergoryProps } from "@/types/catergory";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+} from "@/app/(admin)/categories/services/categories";
+import {
+  AddCatergoryProps,
+  getCatergoryProps,
+} from "@/app/(admin)/categories/types/catergory";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function Categoryform() {
+export default function Categoryform({ data }: { data: getCatergoryProps[] }) {
   const [openmodel, setopenmodel] = useState(false);
   const [typemodel, settypemodel] = useState("");
   const [selectid, setselectid] = useState("");
@@ -26,6 +28,8 @@ export default function Categoryform() {
     formState: { errors },
     reset,
   } = useForm<AddCatergoryProps>();
+  const router = useRouter();
+
   const openmodelfun = (type: string, id?: string) => {
     setopenmodel(true);
     settypemodel(type);
@@ -37,14 +41,11 @@ export default function Categoryform() {
     setopenmodel(false);
   };
   /* create category */
-  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: CreateGategory,
     onSuccess: () => {
       toast.success("catergory is created successfully");
-      queryClient.invalidateQueries({
-        queryKey: ["categories"],
-      });
+      router.refresh();
       reset();
       closemodelfun();
     },
@@ -55,15 +56,7 @@ export default function Categoryform() {
   const handlecreate = (data: AddCatergoryProps) => {
     mutation.mutate(data);
   };
-  /* get category */
 
-  const { data: categorydata, isLoading, isError } = useCategory();
-  {
-    isLoading && <p>loading...</p>;
-  }
-  {
-    isError && <p>error...</p>;
-  }
   /* Delete category */
 
   const DeleteMutatuion = useMutation({
@@ -71,9 +64,7 @@ export default function Categoryform() {
     onSuccess: () => {
       toast.success("category is deleted successfully");
       closemodelfun();
-      queryClient.invalidateQueries({
-        queryKey: ["categories"],
-      });
+      router.refresh();
     },
     onError: (error: AxiosError<{ message: string }>) => {
       toast.error(error.response?.data.message || "An error occurred");
@@ -92,7 +83,7 @@ export default function Categoryform() {
         </Button>
       </div>
       <div>
-        {categorydata?.map((cat) => {
+        {data?.map((cat) => {
           return (
             <div
               key={cat._id}
@@ -111,7 +102,7 @@ export default function Categoryform() {
         })}
       </div>
       <Model open={openmodel} onClose={closemodelfun}>
-        <h3>{typemodel} catrogry</h3>
+        <h3 className="text-lg font-semibold">{typemodel} Category</h3>
         {typemodel === "Add" ? (
           <form onSubmit={handleSubmit(handlecreate)}>
             <div className="flex flex-col gap-4 py-4">
@@ -147,8 +138,11 @@ export default function Categoryform() {
             </div>
           </form>
         ) : (
-          <div className="flex flex-col items-center w-full">
-            <p>Are you sure?</p>
+          <div className="flex flex-col items-center w-full py-3">
+            <p className="text-sm text-gray-500 py-3">
+              Are you sure you want to delete this category? This action cannot
+              be undone.
+            </p>
             <div className="flex justify-between items-center w-full">
               <Button
                 className="py-2 px-4 rounded-md"

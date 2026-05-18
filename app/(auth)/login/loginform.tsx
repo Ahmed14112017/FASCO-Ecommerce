@@ -71,7 +71,7 @@ export default function Loginform() {
       console.log(res.user);
       toast.success(res.message || "login is success");
       if (res.user.role === "admin") {
-        router.push("/Adminproducts");
+        router.push("/admin-products");
       } else {
         router.push("/products");
       }
@@ -88,7 +88,7 @@ export default function Loginform() {
       const res = await googlelogin(credentialResponse);
       toast.success("Wellcome");
 
-      router.push(res.role === "admin" ? "/Adminproducts" : "/products");
+      router.push(res.role === "admin" ? "/admin-products" : "/products");
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Google login failed",

@@ -22,7 +22,7 @@ const itemSidebar: itemProps[] = [
   },
   {
     name: "products",
-    href: "/Adminproducts",
+    href: "/admin-products",
     icon: <ShoppingBasket />,
   },
   {
@@ -32,7 +32,7 @@ const itemSidebar: itemProps[] = [
   },
   {
     name: "orders",
-    href: "/Adminorders",
+    href: "/admin-orders",
     icon: <Logs />,
   },
 ];

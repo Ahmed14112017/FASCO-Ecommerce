@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { GetGategory } from "../api/categories";
+import { GetGategory } from "../../app/(admin)/categories/services/categories";
 
 export const useCategory = () => {
   return useQuery({

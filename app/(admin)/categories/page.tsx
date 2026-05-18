@@ -1,9 +1,12 @@
-import Categoryform from "./Categoryform";
+import { GetGategory } from "@/app/(admin)/categories/services/categories";
+import Categoryform from "./components/Categoryform";
 
-export default function Admincategoriespage() {
+export default async function Admincategoriespage() {
+  const data = await GetGategory();
+
   return (
     <>
-      <Categoryform />
+      <Categoryform data={data} />
     </>
   );
 }

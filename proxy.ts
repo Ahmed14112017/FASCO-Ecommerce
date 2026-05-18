@@ -8,11 +8,11 @@ export default function proxy(req: NextRequest) {
   //   if (token && (pathname === "/login" || pathname === "/register")) {
   //     const decoded = jwtDecode<decodedtoken>(token);
   //     if (decoded.role === "admin") {
-  //       return NextResponse.redirect(new URL("/Adminproducts", req.url));
+  //       return NextResponse.redirect(new URL("/admin-products", req.url));
   //     }
   //     return NextResponse.redirect(new URL("/", req.url));
   //   }
-  //   if (token && pathname.startsWith("/Adminproducts")) {
+  //   if (token && pathname.startsWith("/admin-products")) {
   //     const decoded = jwtDecode<decodedtoken>(token);
   //     if (decoded.role !== "admin") {
   //       return NextResponse.redirect(new URL("/", req.url));

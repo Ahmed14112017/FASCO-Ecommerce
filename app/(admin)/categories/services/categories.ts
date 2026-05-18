@@ -1,6 +1,8 @@
-import { AddCatergoryProps, getCatergoryProps } from "@/types/catergory";
-import api from "../axios";
-import { useQuery } from "@tanstack/react-query";
+import {
+  AddCatergoryProps,
+  getCatergoryProps,
+} from "@/app/(admin)/categories/types/catergory";
+import api from "../../../../lib/axios";
 
 export const CreateGategory = async (data: AddCatergoryProps) => {
   const res = await api.post("categories", data);
