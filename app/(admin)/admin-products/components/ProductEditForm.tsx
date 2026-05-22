@@ -27,6 +27,7 @@ export default function ProductEditForm({
     resolver: zodResolver(productschema),
     defaultValues: {
       name: data.name,
+      description: data.description,
       price: data.price,
       stock: data.stock,
       category: data.category?._id ?? "",
@@ -61,7 +62,7 @@ export default function ProductEditForm({
 
   return (
     <div>
-      <h2>View Product</h2>
+      <h2>Edit Product</h2>
       <form
         onSubmit={handleSubmit((formdata) => {
           mutation.mutate({
@@ -69,51 +70,88 @@ export default function ProductEditForm({
             updatedate: { ...formdata, image: imageFile },
           });
         })}
+        className="w-full flex flex-col  gap-1"
       >
-        <div>
+        <div className="flex items-center">
           <label htmlFor="name">name</label>
-          <Input id="name" placeholder="name" {...register("name")} />
-          {errors.name && <span>{errors.name.message}</span>}
+          <Input
+            className="w-full"
+            id="name"
+            placeholder="name"
+            {...register("name")}
+          />
         </div>
-        <div>
+        {errors.name && (
+          <span className="text-xs text-red-500">{errors.name.message}</span>
+        )}
+        <div className="flex items-center">
+          <label htmlFor="description">description</label>
+          <textarea
+            {...register("description")}
+            placeholder="Product description"
+            className="w-full"
+          />
+        </div>
+        {errors.description && (
+          <span className="text-xs text-red-500">
+            {errors.description.message}
+          </span>
+        )}
+        <div className="flex items-center">
           <label htmlFor="price">price</label>
 
           <Input
             id="price"
             placeholder="price"
             {...register("price", { valueAsNumber: true })}
+            className="w-full"
           />
-          {errors.price && <span>{errors.price.message}</span>}
         </div>
-        <div>
+        {errors.price && (
+          <span className="text-xs text-red-500">{errors.price.message}</span>
+        )}
+        <div className="flex  items-center">
           <label htmlFor="stock">stock</label>
           <Input
             id="stock"
             placeholder="stock"
             {...register("stock", { valueAsNumber: true })}
+            className="w-full"
           />
-          {errors.stock && <span>{errors.stock.message}</span>}
         </div>
-        <div>
+        {errors.stock && (
+          <span className="text-xs text-red-500">{errors.stock.message}</span>
+        )}
+        <div className="flex  items-center">
           <label htmlFor="category">category</label>
-          <select {...register("category")}>
+          <select
+            {...register("category")}
+            className="w-full border-b text-sm outline-none border-gray-400"
+          >
             <option value="">Select category</option>
             {catergry?.map((cat) => {
               return <option value={cat._id}>{cat.name}</option>;
             })}
           </select>
-          {errors.category && <span>{errors.category.message}</span>}
         </div>
-        <div>
+        {errors.category && (
+          <span className="text-xs text-red-500">
+            {errors.category.message}
+          </span>
+        )}
+        <div className="flex  items-center">
           <label htmlFor="rating">rating</label>
           <Input
             id="rating"
             placeholder="rating"
             {...register("rating", { valueAsNumber: true })}
+            className="w-full"
           />
-          {errors.rating && <span>{errors.rating.message}</span>}
         </div>
-        <div className="flex gap-2 py-2">
+        {errors.rating && (
+          <span className="text-xs text-red-500">{errors.rating.message}</span>
+        )}
+        <div className="flex  items-center">
           <label htmlFor="images">images</label>
           <Input
             type="file"
@@ -134,9 +172,15 @@ export default function ProductEditForm({
             Choose Image
           </Button>
         </div>
-        <Button type="submit" variant="secondary">
-          save
-        </Button>
+        <div className="w-full flex items-center justify-center">
+          <Button
+            type="submit"
+            className="py-2 px-4 rounded-md w-full bg-gray-300"
+            variant="secondary"
+          >
+            save
+          </Button>
+        </div>
       </form>
     </div>
   );

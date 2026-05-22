@@ -1,14 +1,24 @@
-import { IdCard } from "lucide-react";
 import api from "../../../../lib/axios";
 import { ProductFormData } from "../schema/productschema";
-import { Productprops } from "../types/products";
 
-export const getProduct = async () => {
-  const res = await api.get("/products");
-
+export const getProduct = async (page = 1) => {
+  const res = await api.get(`/products`, {
+    params: {
+      page,
+      limit: 5,
+    },
+  });
   return res.data;
 };
-
+export const getNewArrivals = async (category?: string) => {
+  const res = await api.get("/products", {
+    params: {
+      limit: 6,
+      ...(category ? { category } : {}),
+    },
+  });
+  return res.data;
+};
 export const getProductByid = async (id: string) => {
   const res = await api.get(`/products/${id}`);
   return res.data;
@@ -47,4 +57,9 @@ export const updateproduct = async (
   }
   const res = await api.put(`/products/${id}`, formdata);
   return res.data;
+};
+
+export const deleteproduct = async (id: string) => {
+  const res = await api.delete(`/products/${id}`);
+  return res;
 };

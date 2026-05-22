@@ -48,65 +48,89 @@ export default function ProductAddModel({ close }: { close: () => void }) {
         onSubmit={handleSubmit((data) => {
           addProductMutation.mutate({ ...data, image: imageFile });
         })}
+        className="w-full flex flex-col  gap-"
       >
-        <div>
+        <div className="w-full flex items-center gap-2">
           <label htmlFor="name">name</label>
-          <Input id="name" placeholder="name" {...register("name")} />
-          {errors.name && (
-            <span className="text-xs text-red-500">{errors.name.message}</span>
-          )}
+          <Input
+            className="w-full"
+            id="name"
+            placeholder="name"
+            {...register("name")}
+          />
         </div>
-        <div>
+        {errors.name && (
+          <span className="text-xs text-red-500">{errors.name.message}</span>
+        )}
+        <div className="w-full flex items-center gap-2">
+          <label htmlFor="description">description</label>
+          <textarea
+            className="w-full border-b text-sm outline-none  border-gray-400"
+            {...register("description")}
+          />
+        </div>
+        {errors.description && (
+          <span className="text-xs text-red-500">
+            {errors.description.message}
+          </span>
+        )}
+        <div className="w-full flex items-center gap-2">
           <label htmlFor="price">price</label>
 
           <Input
             id="price"
             placeholder="price"
             {...register("price", { valueAsNumber: true })}
+            className="w-full"
           />
-          {errors.price && (
-            <span className="text-xs text-red-500">{errors.price.message}</span>
-          )}
         </div>
-        <div>
+        {errors.price && (
+          <span className="text-xs text-red-500">{errors.price.message}</span>
+        )}
+        <div className="w-full flex items-center gap-2">
           <label htmlFor="stock">stock</label>
           <Input
             id="stock"
             placeholder="stock"
             {...register("stock", { valueAsNumber: true })}
+            className="w-full"
           />
-          {errors.stock && (
-            <span className="text-xs text-red-500">{errors.stock.message}</span>
-          )}
         </div>
-        <div>
+        {errors.stock && (
+          <span className="text-xs text-red-500">{errors.stock.message}</span>
+        )}
+        <div className="w-full flex justify-start items-center gap-2">
           <label htmlFor="category">category</label>
-          <select {...register("category")}>
-            <option value="">Select category</option>
+          <select
+            {...register("category")}
+            className="w-full border-b text-sm outline-none border-gray-400"
+          >
+            <option className="py-4" value="">
+              Select category
+            </option>
             {categories?.map((cat) => {
               return <option value={cat._id}>{cat.name}</option>;
             })}
           </select>
-          {errors.category && (
-            <span className="text-xs text-red-500">
-              {errors.category.message}
-            </span>
-          )}
         </div>
-        <div>
+        {errors.category && (
+          <span className="text-xs text-red-500">
+            {errors.category.message}
+          </span>
+        )}
+        <div className="w-full flex items-center gap-2">
           <label htmlFor="rating">rating</label>
           <Input
+            className="w-full"
             id="rating"
             placeholder="rating"
             {...register("rating", { valueAsNumber: true })}
           />
-          {errors.rating && (
-            <span className="text-xs text-red-500">
-              {errors.rating.message}
-            </span>
-          )}
         </div>
-        <div className="flex gap-2 py-2">
+        {errors.rating && (
+          <span className="text-xs text-red-500">{errors.rating.message}</span>
+        )}
+        <div className="w-full flex items-center gap-2">
           <label htmlFor="images">images</label>
           <Input
             type="file"
@@ -124,9 +148,15 @@ export default function ProductAddModel({ close }: { close: () => void }) {
             Choose Image
           </Button>
         </div>
-        <Button type="submit" variant="secondary">
-          save
-        </Button>
+        <div className="w-full flex items-center justify-center">
+          <Button
+            type="submit"
+            className="py-2 px-4 rounded-md w-full bg-gray-300"
+            variant="secondary"
+          >
+            save
+          </Button>
+        </div>
       </form>
     </div>
   );

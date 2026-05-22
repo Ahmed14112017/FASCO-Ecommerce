@@ -1,6 +1,7 @@
 export interface Productprops {
   _id?: string;
   name: string;
+  description: string;
   price: number;
   images: string[];
   category: {

@@ -11,6 +11,7 @@ import ProductDeleteConfirm from "./ProductDeleteConfirm";
 import ProductAddModel from "./ProductAddModel";
 const items = [
   "name",
+  "description",
   "price",
   "images",
   "category",
@@ -27,6 +28,7 @@ export default function ProductGridAdmin({
   const [selectid, setselectid] = useState("");
   const [selectitem, setselectitem] = useState<Productprops | null>(null);
   const [typeaction, settypeaction] = useState("");
+
   const openmodelfun = (type: string, id?: string, data?: Productprops) => {
     setopemModel(true);
     settypeaction(type);
@@ -43,7 +45,7 @@ export default function ProductGridAdmin({
   };
   return (
     <>
-      <div className="flex justify-between items-center py-6">
+      <div className="flex justify-between items-center py-6 px-4">
         <h3>Products</h3>
         <Button
           onClick={() => openmodelfun("Add")}
@@ -69,11 +71,12 @@ export default function ProductGridAdmin({
           {productdata?.map((pro) => {
             return (
               <tr className="border-b border-gray-400" key={pro._id}>
-                <td className="p-3 ">{pro.name}</td>
+                <td className="p-2 ">{pro.name}</td>
+                <td className="p-2 ">{pro.description}</td>
 
-                <td className="p-3 ">{pro.price}</td>
+                <td className="p-2 ">{pro.price}</td>
 
-                <td className="p-3 ">
+                <td className="p-2 ">
                   <div className="flex justify-center">
                     {" "}
                     {pro.images[0] ? (
@@ -98,10 +101,10 @@ export default function ProductGridAdmin({
 
                 <td>{pro.category?.name}</td>
 
-                <td className="p-3 ">{pro.stock}</td>
+                <td className="p-2 ">{pro.stock}</td>
 
-                <td className="p-3 ">{pro.rating}</td>
-                <td className="p-3 ">
+                <td className="p-2 ">{pro.rating}</td>
+                <td className="p-2 ">
                   <Button onClick={() => openmodelfun("view", pro._id)}>
                     <Eye className="bg-white text-black" size={20} />
                   </Button>
@@ -127,7 +130,7 @@ export default function ProductGridAdmin({
         ) : typeaction === "Add" ? (
           <ProductAddModel close={closemodelfun} />
         ) : (
-          <ProductDeleteConfirm />
+          <ProductDeleteConfirm close={closemodelfun} id={selectid} />
         )}
       </Model>
     </>

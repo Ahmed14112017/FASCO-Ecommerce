@@ -35,6 +35,7 @@ export default function ProductViewModel({ id }: { id: string }) {
         data && (
           <ul>
             <li>name: {data.name}</li>
+            <li>description: {data.description}</li>
             <li>price: {data.price}</li>
             <li>rating: {data.rating}</li>
             <li>stock: {data.stock}</li>

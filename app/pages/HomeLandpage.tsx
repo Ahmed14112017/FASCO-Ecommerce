@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 export default function HomeLandpage() {
   const router = useRouter();
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:px-4 pt-6 ">
+    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:px-4 pt-6 container  mx-auto px-4 py-8 ">
       <div className="relative w-full aspect-3/4  rounded-lg bg-[#E0E0E0] min-h-162.5 overflow-hidden">
         <Image
           src={"/images/home-1.png"}
@@ -16,7 +16,7 @@ export default function HomeLandpage() {
         />
       </div>
       <div className="flex flex-col justify-between items-center  w-full h-full ">
-        <div className="relative  h-35  w-full">
+        <div className="relative hidden md:block  h-35  w-full">
           <Image
             src={"/images/group.png"}
             alt="group"
