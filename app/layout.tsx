@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactQueryProvider from "./providers/ReactQueryProvider";
+import StoreProvider from "./providers/StoreProvider";
 
 export const metadata: Metadata = {
   title: "FASCO Ecommerce",
@@ -25,7 +26,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`min-h-full flex flex-col  ${volkhov.className}`}>
         <GoogleOAuthProvider clientId={process.env.CLIENT_ID!}>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <StoreProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </StoreProvider>
 
           <ToastContainer />
         </GoogleOAuthProvider>

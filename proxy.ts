@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { NextRequest, NextResponse } from "next/server";
-import { decodedtoken } from "./types/auth";
+import { decodedtoken } from "./features/auth/types/auth";
 
 export default function proxy(req: NextRequest) {
   // const token = req.cookies.get("token")?.value;

@@ -1,9 +1,12 @@
 "use client";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
-import { ForgetPassword } from "@/lib/api/auth";
-import { Forgetpassword, Forgetpasswordschema } from "@/lib/schema/auth.schema";
-import { ForgetPassworddataProps } from "@/types/auth";
+import { ForgetPassword } from "@/features/auth/services/auth";
+import {
+  Forgetpassword,
+  Forgetpasswordschema,
+} from "@/features/auth/schema/auth.schema";
+import { ForgetPassworddataProps } from "@/features/auth/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import Link from "next/link";

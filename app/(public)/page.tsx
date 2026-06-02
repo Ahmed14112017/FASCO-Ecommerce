@@ -1,6 +1,7 @@
-import BrandsBar from "../components/BrandsBar/BrandsBar";
-import NewArrivals from "../components/NewArrivals/NewArrivals";
-import Offer from "../components/Offer/Offer";
+import BrandsBar from "./BrandsBar/BrandsBar";
+import NewArrivals from "./NewArrivals/NewArrivals";
+import Offer from "./Offer/Offer";
+import HeroSlider from "./HeroSlider";
 import HomeLandpage from "../pages/HomeLandpage";
 
 export default function headerPage() {
@@ -10,6 +11,7 @@ export default function headerPage() {
       <BrandsBar />
       <Offer />
       <NewArrivals />
+      <HeroSlider />
     </div>
   );
 }

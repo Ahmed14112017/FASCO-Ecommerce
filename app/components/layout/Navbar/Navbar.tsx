@@ -6,32 +6,64 @@ import { Menu } from "lucide-react";
 import { X } from "lucide-react";
 import cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { decodedtoken } from "@/types/auth";
+import { decodedtoken } from "@/features/auth/types/auth";
+import { useRouter } from "next/navigation";
+import MiniCart from "../MiniCart";
+import { useAppSelector } from "@/lib/hooks/Hooks";
+import { ShoppingCart } from "lucide-react";
+import { Search } from "lucide-react";
+import { Heart } from "lucide-react";
 
 interface NavItem {
   name: string;
   href: string;
 }
+const guestNav: NavItem[] = [
+  {
+    name: "Home",
+    href: "home",
+  },
+  { name: "Deals", href: "deals" },
+  { name: "New Arrivals", href: "New-Arrivals" },
+  { name: "Packages", href: "Packages" },
+];
+const userNav: NavItem[] = [
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/shop" },
+  { name: "Products", href: "/products" },
+  { name: "Orders", href: "/orders" },
+  { name: "Profile", href: "/profile" },
+];
 export default function Navbar() {
+  const [showCart, setShowCart] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${searchQuery}`);
+      setShowSearch(false);
+      setSearchQuery("");
+    }
+  }
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const cartCount = cartItems.reduce(
+    (acc, item) => acc + (item.quantity ?? 1),
+    0,
+  );
   const token = cookies.get("token");
+  const router = useRouter();
 
   let decoded: decodedtoken | null = null;
 
   if (token) {
     decoded = jwtDecode<decodedtoken>(token);
   }
-
+  const isUser = decoded?.role === "user";
+  const navbar = isUser ? userNav : guestNav;
   console.log(decoded);
   const [openmenu, setopenmenu] = useState(false);
-  const navbar: NavItem[] = [
-    {
-      name: "Home",
-      href: "#home",
-    },
-    { name: "Deals", href: "#deals" },
-    { name: "New Arrivals", href: "#New-Arrivals" },
-    { name: "Packages", href: "#Packages" },
-  ];
+
   return (
     <header className="py-3 px-6 sticky z-50 top-0 bg-white border-b border-gray-100">
       <nav className="flex justify-between  items-center ">
@@ -45,7 +77,7 @@ export default function Navbar() {
               <li key={nav.name}>
                 <Link
                   className="hover:text-gray-900 transition-colors"
-                  href={`#${nav.href}`}
+                  href={`${nav.href}`}
                 >
                   {nav.name}
                 </Link>
@@ -53,23 +85,89 @@ export default function Navbar() {
             );
           })}
         </ul>
+        {isUser && (
+          <Link href="/wishlist" className="p-2 hover:bg-gray-100 rounded-lg">
+            <Heart size={20} />
+          </Link>
+        )}
+        {/* Search Icon */}
+        {isUser && (
+          <div className="relative">
+            <button
+              onClick={() => setShowSearch(!showSearch)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              <Search size={20} />
+            </button>
+            {showSearch && (
+              <form
+                onSubmit={handleSearch}
+                className="absolute right-0 top-12 bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-3 flex gap-2 w-72"
+              >
+                <input
+                  autoFocus
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search products..."
+                  className="flex-1 border rounded-lg px-3 py-2 text-sm outline-none"
+                />
+                <button
+                  type="submit"
+                  className="px-3 py-2 bg-black text-white rounded-lg text-sm"
+                >
+                  Go
+                </button>
+              </form>
+            )}
+          </div>
+        )}
+        {/* Cart Icon */}
+        {isUser && (
+          <div className="relative">
+            <button
+              onClick={() => setShowCart(!showCart)}
+              className="relative p-2 hover:bg-gray-100 rounded-lg"
+            >
+              <ShoppingCart size={20} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-xs rounded-full flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
+            {showCart && <MiniCart onClose={() => setShowCart(false)} />}
+          </div>
+        )}
         {/* Desktop buttons */}
-
-        <div className="hidden md:flex gap-3 ">
-          <Link
-            className="py-3 px-6 rounded-md bg-gray-100 text-black hover:bg-gray-200"
-            href={"/register"}
-          >
-            Sign up
-          </Link>
-          <Link
-            className="py-3 px-6 rounded-md bg-black text-white hover:opacity-80"
-            href={"/login"}
-          >
-            Sign in
-          </Link>
-        </div>
-
+        {!token ? (
+          <div className="hidden md:flex gap-3 ">
+            <Link
+              className="py-3 px-6 rounded-md bg-gray-100 text-black hover:bg-gray-200"
+              href={"/register"}
+            >
+              Sign up
+            </Link>
+            <Link
+              className="py-3 px-6 rounded-md bg-black text-white hover:opacity-80"
+              href={"/login"}
+            >
+              Sign in
+            </Link>
+          </div>
+        ) : (
+          <div className="hidden md:flex gap-3">
+            <Button
+              className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
+              onClick={() => {
+                cookies.remove("token");
+                router.push("/login");
+              }}
+            >
+              Log out
+            </Button>
+          </div>
+        )}
         {/* Mobile menu button */}
         <button
           className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
@@ -111,21 +209,31 @@ export default function Navbar() {
             })}
           </ul>
         </div>
-
-        <div className="flex flex-col gap-3">
-          <Link
-            className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
-            href="/register"
-          >
-            Sign up
-          </Link>
-          <Link
-            className="py-2 px-5 rounded-md bg-black text-white text-center"
-            href="/login"
-          >
-            Sign in
-          </Link>
-        </div>
+        {!token ? (
+          <div className="flex flex-col gap-3">
+            <Link
+              className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
+              href="/register"
+            >
+              Sign up
+            </Link>
+            <Link
+              className="py-2 px-5 rounded-md bg-black text-white text-center"
+              href="/login"
+            >
+              Sign in
+            </Link>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-3">
+            <Link
+              className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
+              href="/register"
+            >
+              Log out
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );

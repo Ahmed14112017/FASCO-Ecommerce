@@ -1,9 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RegisterForm, registerschema } from "@/lib/schema/auth.schema";
+import {
+  RegisterForm,
+  registerschema,
+} from "@/features/auth/schema/auth.schema";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
-import { googlelogin, registeraccount } from "@/lib/api/auth";
+import { googlelogin, registeraccount } from "@/features/auth/services/auth";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Button from "@/app/components/ui/Button";
@@ -86,9 +89,12 @@ export default function Registerform() {
       const res = await registeraccount(data);
       console.log(res);
       toast.success("it is ok");
+      router.push("/login");
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       toast.error(err.response?.data.message);
+    } finally {
+      setloading(true);
     }
   };
   return (

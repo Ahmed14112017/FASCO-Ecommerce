@@ -3,7 +3,7 @@ import Link from "next/link";
 import Dropdown from "../../ui/Dropdown/Dropdown";
 import { jwtDecode } from "jwt-decode";
 import cookies from "js-cookie";
-import { decodedtoken } from "@/types/auth";
+import { decodedtoken } from "@/features/auth/types/auth";
 import { useEffect, useState } from "react";
 
 export default function AdminNavbar() {

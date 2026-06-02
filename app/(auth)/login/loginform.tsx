@@ -1,16 +1,16 @@
 "use client";
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
-import { googlelogin, login } from "@/lib/api/auth";
+import { googlelogin, login } from "@/features/auth/services/auth";
 import { ChangeEvent, useState } from "react";
 import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { LogindataProps } from "@/types/auth";
+import { LogindataProps } from "@/features/auth/types/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginForm, loginschema } from "@/lib/schema/auth.schema";
+import { LoginForm, loginschema } from "@/features/auth/schema/auth.schema";
 import { IputLogin } from "@/types/input";
 
 export default function Loginform() {

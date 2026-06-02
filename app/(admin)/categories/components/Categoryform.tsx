@@ -5,11 +5,11 @@ import Model from "@/app/components/ui/model/Model";
 import {
   CreateGategory,
   DeleteGategory,
-} from "@/app/(admin)/categories/services/categories";
+} from "@/features/categories/services/categories";
 import {
   AddCatergoryProps,
   getCatergoryProps,
-} from "@/app/(admin)/categories/types/catergory";
+} from "@/features/categories/types/catergory";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";

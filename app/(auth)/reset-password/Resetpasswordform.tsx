@@ -2,8 +2,11 @@
 import Button from "@/app/components/ui/Button";
 import Input from "@/app/components/ui/Input";
 import api from "@/lib/axios";
-import { ResetPassword, ResetPasswordschema } from "@/lib/schema/auth.schema";
-import { ResetPassworddataProps } from "@/types/auth";
+import {
+  ResetPassword,
+  ResetPasswordschema,
+} from "@/features/auth/schema/auth.schema";
+import { ResetPassworddataProps } from "@/features/auth/types/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";

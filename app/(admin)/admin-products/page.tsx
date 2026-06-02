@@ -1,5 +1,5 @@
-import ProductGridAdmin from "./components/ProductTableAdmin";
-import { getProduct } from "@/app/(admin)/admin-products/services/products";
+import ProductGridAdmin from "./component/ProductTableAdmin";
+import { getProduct } from "@/features/products/services/products";
 import Pagination from "@/app/components/pagination/Pagination";
 
 export default async function AdminProductpage({
