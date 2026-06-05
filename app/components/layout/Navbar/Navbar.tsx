@@ -29,7 +29,6 @@ const guestNav: NavItem[] = [
 ];
 const userNav: NavItem[] = [
   { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
   { name: "Products", href: "/products" },
   { name: "Orders", href: "/orders" },
   { name: "Profile", href: "/profile" },
@@ -158,7 +157,8 @@ export default function Navbar() {
         ) : (
           <div className="hidden md:flex gap-3">
             <Button
-              className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
+              variant="primary"
+              className="py-2 px-5 rounded-md "
               onClick={() => {
                 cookies.remove("token");
                 router.push("/login");

@@ -6,6 +6,7 @@ import {
   PanelRightClose,
   PanelRightOpen,
   ShoppingBasket,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import { ReactNode, useState } from "react";
@@ -34,6 +35,11 @@ const itemSidebar: itemProps[] = [
     name: "orders",
     href: "/admin-orders",
     icon: <Logs />,
+  },
+  {
+    name: "users",
+    href: "/admin-users",
+    icon: <Users />,
   },
 ];
 export default function Sidebar() {
