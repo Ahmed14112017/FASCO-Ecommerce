@@ -38,11 +38,19 @@ function NavLink({
   className?: string;
   onClick?: () => void;
 }) {
+  const router = useRouter();
+
   if (nav.href.startsWith("/#")) {
     return (
-      <a href={nav.href} onClick={onClick} className={className}>
+      <button
+        onClick={() => {
+          router.push(nav.href);
+          onClick?.();
+        }}
+        className={className}
+      >
         {nav.name}
-      </a>
+      </button>
     );
   }
   return (
