@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { Gem, ShieldCheck, Truck, Headphones } from "lucide-react";
 
 const slides = [
   {
@@ -33,21 +34,21 @@ const slides = [
 ];
 
 const features = [
-  { icon: "✦", label: "High Quality", sub: "Crafted from top materials" },
-  { icon: "🛡", label: "Warranty Protection", sub: "Over 2 years" },
-  { icon: "🚚", label: "Free Shipping", sub: "Order over $150" },
-  { icon: "🎧", label: "24/7 Support", sub: "Dedicated support" },
+  { icon: Gem, label: "High Quality", sub: "Crafted from top materials" },
+  { icon: ShieldCheck, label: "Warranty Protection", sub: "Over 2 years" },
+  { icon: Truck, label: "Free Shipping", sub: "Order over $150" },
+  { icon: Headphones, label: "24/7 Support", sub: "Dedicated support" },
 ];
 
-export default function HeroSlider() {
+export default function HeroSlider({ className }: { className?: string }) {
   const [current, setCurrent] = useState(0);
 
   return (
-    <section className="bg-[#F5F5F5]">
+    <section className={`bg-[#F5F5F5] ${className}`}>
       {/* Slider */}
-      <div className="max-w-7xl mx-auto px-6 py-12 flex items-center gap-8">
+      <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center gap-8">
         {/* Image */}
-        <div className="relative w-1/2 h-170">
+        <div className="relative w-full md:w-1/2 h-72 md:h-170">
           <Image
             src={slides[current].image}
             alt={slides[current].title}
@@ -57,11 +58,11 @@ export default function HeroSlider() {
         </div>
 
         {/* Content */}
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-full md:w-1/2 flex flex-col gap-4">
           <p className="text-sm text-gray-500 uppercase tracking-widest">
             {slides[current].collection}
           </p>
-          <h1 className="text-5xl font-bold text-black leading-tight">
+          <h1 className="text-3xl md:text-5xl font-bold text-black leading-tight">
             {slides[current].title}
           </h1>
           <p className="text-gray-500 text-sm leading-relaxed">
@@ -89,10 +90,10 @@ export default function HeroSlider() {
 
       {/* Features */}
       <div className="border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-4 gap-4">
+        <div className="max-w-7xl mx-auto px-6 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           {features.map((f) => (
             <div key={f.label} className="flex items-center gap-3">
-              <span className="text-2xl">{f.icon}</span>
+              <f.icon size={24} className="text-gray-700 shrink-0" />
               <div>
                 <p className="text-sm font-semibold">{f.label}</p>
                 <p className="text-xs text-gray-400">{f.sub}</p>

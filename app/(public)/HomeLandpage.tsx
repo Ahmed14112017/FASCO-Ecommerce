@@ -3,10 +3,12 @@ import Image from "next/image";
 import Button from "../components/ui/Button";
 import { useRouter } from "next/navigation";
 
-export default function HomeLandpage() {
+export default function HomeLandpage({ className }: { className?: string }) {
   const router = useRouter();
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:px-4 pt-6 container  mx-auto px-4 py-8 ">
+    <section
+      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:px-4 pt-6 container  mx-auto px-4 py-8 ${className}`}
+    >
       <div className="relative w-full aspect-3/4  rounded-lg bg-[#E0E0E0] min-h-162.5 overflow-hidden">
         <Image
           src={"/images/home-1.png"}

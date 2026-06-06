@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import {
   getWishlist,
   removeFromWishlist,
@@ -8,7 +10,6 @@ import { addToCart } from "@/app/(shop)/cart/cartSlice/cartslice";
 import { useAppDispatch } from "@/lib/hooks/Hooks";
 import { Productprops } from "@/features/products/types/products";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 export default function WishlistPage() {
@@ -18,19 +19,25 @@ export default function WishlistPage() {
   const router = useRouter();
 
   useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      toast.error("Please login first");
+      setLoading(false);
+      router.push("/login");
+      return;
+    }
     async function fetchWishlist() {
       try {
         const data = await getWishlist();
         setItems(data);
       } catch {
-        toast.error("Error fetching wishlist");
+        toast.error("Please login first");
       } finally {
         setLoading(false);
       }
     }
     fetchWishlist();
   }, []);
-
   async function handleRemove(productId: string) {
     try {
       await removeFromWishlist(productId);

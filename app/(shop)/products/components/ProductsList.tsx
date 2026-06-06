@@ -67,7 +67,7 @@ export default function ProductsList({ filters }: ProductsListProps) {
 
       {/* Grid */}
       {!loading && products.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {products.map((product) => (
             <ProductGrid key={product._id} product={product} />
           ))}

@@ -94,7 +94,7 @@ export default function FilterProduct({ onFilterChange }: FilterProductProps) {
   }
 
   return (
-    <aside className="w-56 shrink-0 flex flex-col gap-6">
+    <aside className="w-full md:w-56 shrink-0 flex flex-col gap-6">
       {/* Category */}
       <div>
         <h3 className="text-sm font-semibold mb-3 uppercase tracking-wide">

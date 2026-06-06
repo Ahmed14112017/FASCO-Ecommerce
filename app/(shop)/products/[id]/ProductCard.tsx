@@ -4,13 +4,26 @@ import { addToCart } from "@/app/(shop)/cart/cartSlice/cartslice";
 import { useAppDispatch } from "@/lib/hooks/Hooks";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }: { product: Productprops }) {
   const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const requireAuth = () => {
+    const token = Cookies.get("token");
+    if (!token) {
+      toast.error("Please login first");
+      router.push("/login");
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="container mx-auto px-6 py-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Image */}
         <div className="relative w-full h-125 rounded-xl overflow-hidden">
           <Image
             src={product.images?.[0] || "/images/image-not-found.png"}
@@ -20,17 +33,12 @@ export default function ProductCard({ product }: { product: Productprops }) {
           />
         </div>
 
-        {/* Details */}
         <div className="flex flex-col gap-4 justify-center">
-          {/* Category */}
           <p className="text-sm text-gray-400 uppercase tracking-widest">
             {product.category?.name}
           </p>
-
-          {/* Name */}
           <h1 className="text-3xl font-bold text-black">{product.name}</h1>
 
-          {/* Rating */}
           <div className="flex items-center gap-1">
             {Array.from({ length: 5 }, (_, i) => (
               <span
@@ -46,23 +54,18 @@ export default function ProductCard({ product }: { product: Productprops }) {
             ))}
           </div>
 
-          {/* Price */}
           <p className="text-2xl font-semibold">${product.price}</p>
-
-          {/* Description */}
           <p className="text-gray-500 text-sm leading-relaxed">
             {product.description}
           </p>
-
-          {/* Stock */}
           <p className="text-sm text-gray-400">
             Stock:{" "}
             <span className="text-black font-medium">{product.stock}</span>
           </p>
 
-          {/* Add to Cart */}
           <button
             onClick={() => {
+              if (!requireAuth()) return;
               dispatch(
                 addToCart({
                   _id: product._id,

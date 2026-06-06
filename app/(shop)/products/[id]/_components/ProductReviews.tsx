@@ -10,6 +10,7 @@ import Image from "next/image";
 import cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { decodedtoken } from "@/features/auth/types/auth";
+import { useRouter } from "next/navigation";
 
 interface Review {
   _id: string;
@@ -26,7 +27,9 @@ export default function ProductReviews({ productId }: { productId: string }) {
   const [comment, setComment] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  const router = useRouter();
   const token = cookies.get("token");
+
   let currentUserId = "";
   if (token) {
     const decoded = jwtDecode<decodedtoken>(token);
@@ -47,7 +50,17 @@ export default function ProductReviews({ productId }: { productId: string }) {
     fetchReviews();
   }, [productId]);
 
+  const requireAuth = () => {
+    if (!token) {
+      toast.error("Please login first");
+      router.push("/login");
+      return false;
+    }
+    return true;
+  };
+
   async function handleSubmit() {
+    if (!requireAuth()) return;
     if (!comment.trim()) return;
     setSubmitting(true);
     try {
@@ -77,45 +90,37 @@ export default function ProductReviews({ productId }: { productId: string }) {
     <div className="mt-12">
       <h2 className="text-xl font-bold mb-6">Customer Reviews</h2>
 
-      {/* Add Review Form */}
-      {token && (
-        <div className="border rounded-xl p-6 mb-8">
-          <h3 className="font-medium mb-4">Write a Review</h3>
-
-          {/* Star Rating */}
-          <div className="flex gap-1 mb-4">
-            {Array.from({ length: 5 }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setRating(i + 1)}
-                className={`text-2xl transition-colors ${
-                  i < rating ? "text-yellow-400" : "text-gray-300"
-                }`}
-              >
-                ★
-              </button>
-            ))}
-          </div>
-
-          <textarea
-            className="w-full border rounded-lg p-3 text-sm mb-3 outline-none resize-none"
-            rows={3}
-            placeholder="Write your review..."
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-
-          <button
-            onClick={handleSubmit}
-            disabled={submitting}
-            className="px-6 py-2 bg-black text-white rounded-lg text-sm hover:opacity-80 disabled:opacity-50"
-          >
-            {submitting ? "Submitting..." : "Submit Review"}
-          </button>
+      <div className="border rounded-xl p-6 mb-8">
+        <h3 className="font-medium mb-4">Write a Review</h3>
+        <div className="flex gap-1 mb-4">
+          {Array.from({ length: 5 }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setRating(i + 1)}
+              className={`text-2xl transition-colors ${
+                i < rating ? "text-yellow-400" : "text-gray-300"
+              }`}
+            >
+              ★
+            </button>
+          ))}
         </div>
-      )}
+        <textarea
+          className="w-full border rounded-lg p-3 text-sm mb-3 outline-none resize-none"
+          rows={3}
+          placeholder="Write your review..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+        <button
+          onClick={handleSubmit}
+          disabled={submitting}
+          className="px-6 py-2 bg-black text-white rounded-lg text-sm hover:opacity-80 disabled:opacity-50"
+        >
+          {submitting ? "Submitting..." : "Submit Review"}
+        </button>
+      </div>
 
-      {/* Reviews List */}
       {loading ? (
         <p className="text-gray-400 text-sm">Loading reviews...</p>
       ) : reviews.length === 0 ? (
@@ -150,8 +155,6 @@ export default function ProductReviews({ productId }: { productId: string }) {
                   </button>
                 )}
               </div>
-
-              {/* Stars */}
               <div className="flex gap-0.5 my-2">
                 {Array.from({ length: 5 }, (_, i) => (
                   <span
@@ -162,7 +165,6 @@ export default function ProductReviews({ productId }: { productId: string }) {
                   </span>
                 ))}
               </div>
-
               <p className="text-sm text-gray-600">{review.comment}</p>
             </div>
           ))}

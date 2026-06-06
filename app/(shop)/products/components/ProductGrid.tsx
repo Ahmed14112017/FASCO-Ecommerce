@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { toast } from "react-toastify";
+import cookies from "js-cookie";
 
 export default function ProductGrid({ product }: { product: Productprops }) {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function ProductGrid({ product }: { product: Productprops }) {
 
   useEffect(() => {
     async function checkWishlist() {
+      const token = cookies.get("token");
+      if (!token) return; // مش logged in - متعملش request
       try {
         const items = await getWishlist();
         setIsWishlisted(items.some((item: any) => item._id === product._id));
@@ -25,7 +28,6 @@ export default function ProductGrid({ product }: { product: Productprops }) {
     }
     checkWishlist();
   }, [product._id]);
-
   async function handleWishlist(e: React.MouseEvent) {
     e.stopPropagation();
     try {

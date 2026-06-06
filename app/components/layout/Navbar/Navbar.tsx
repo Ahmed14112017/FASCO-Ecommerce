@@ -19,13 +19,10 @@ interface NavItem {
   href: string;
 }
 const guestNav: NavItem[] = [
-  {
-    name: "Home",
-    href: "home",
-  },
-  { name: "Deals", href: "deals" },
-  { name: "New Arrivals", href: "New-Arrivals" },
-  { name: "Packages", href: "Packages" },
+  { name: "Home", href: "/#home" },
+  { name: "Deals", href: "/#deals" },
+  { name: "New Arrivals", href: "/#new-arrivals" },
+  { name: "Packages", href: "/#packages" },
 ];
 const userNav: NavItem[] = [
   { name: "Home", href: "/" },

@@ -6,7 +6,7 @@ import { getNewArrivals } from "@/features/products/services/products";
 import { Productprops } from "@/features/products/types/products";
 import ProductGrid from "../../(shop)/products/components/ProductGrid";
 
-export default function NewArrivals() {
+export default function NewArrivals({ className }: { className?: string }) {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const { data } = useQuery({
@@ -15,10 +15,10 @@ export default function NewArrivals() {
   });
 
   return (
-    <section className="container  mx-auto px-4 py-8">
+    <section className={`container  mx-auto px-4 py-8 ${className}`}>
       <h2 className="text-center text-2xl font-bold py-4">New Arrivals</h2>
       <CategoryTabs onSelect={setSelectedCategory} />
-      <div className="grid grid-cols-3 gap-4 mt-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-6">
         {data?.products.map((product: Productprops) => (
           <ProductGrid key={product._id} product={product} />
         ))}
