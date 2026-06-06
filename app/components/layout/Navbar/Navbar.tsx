@@ -29,24 +29,24 @@ const userNav: NavItem[] = [
   { name: "Profile", href: "/profile" },
 ];
 
-function NavLink({ nav, onClick }: { nav: NavItem; onClick?: () => void }) {
+function NavLink({
+  nav,
+  className,
+  onClick,
+}: {
+  nav: NavItem;
+  className?: string;
+  onClick?: () => void;
+}) {
   if (nav.href.startsWith("/#")) {
     return (
-      
-        href={nav.href}
-        onClick={onClick}
-        className="hover:text-gray-900 transition-colors"
-      >
+      <a href={nav.href} onClick={onClick} className={className}>
         {nav.name}
       </a>
     );
   }
   return (
-    <Link
-      href={nav.href}
-      onClick={onClick}
-      className="hover:text-gray-900 transition-colors"
-    >
+    <Link href={nav.href} onClick={onClick} className={className}>
       {nav.name}
     </Link>
   );
@@ -59,12 +59,18 @@ export default function Navbar() {
   const [openmenu, setopenmenu] = useState(false);
 
   const cartItems = useAppSelector((state) => state.cart.items);
-  const cartCount = cartItems.reduce((acc, item) => acc + (item.quantity ?? 1), 0);
+  const cartCount = cartItems.reduce(
+    (acc, item) => acc + (item.quantity ?? 1),
+    0,
+  );
+
   const token = cookies.get("token");
   const router = useRouter();
 
   let decoded: decodedtoken | null = null;
-  if (token) decoded = jwtDecode<decodedtoken>(token);
+  if (token) {
+    decoded = jwtDecode<decodedtoken>(token);
+  }
 
   const isUser = decoded?.role === "user";
   const navbar = isUser ? userNav : guestNav;
@@ -81,6 +87,7 @@ export default function Navbar() {
   return (
     <header className="py-3 px-6 sticky z-50 top-0 bg-white border-b border-gray-100">
       <nav className="flex justify-between items-center">
+        {/* Logo */}
         <Link className="text-xl text-gray-600" href="/">
           FASCO
         </Link>
@@ -89,18 +96,22 @@ export default function Navbar() {
         <ul className="hidden md:flex md:ml-auto items-center gap-5">
           {navbar.map((nav) => (
             <li key={nav.name}>
-              <NavLink nav={nav} />
+              <NavLink
+                nav={nav}
+                className="hover:text-gray-900 transition-colors"
+              />
             </li>
           ))}
         </ul>
 
-        {/* Icons */}
+        {/* Wishlist */}
         {isUser && (
           <Link href="/wishlist" className="p-2 hover:bg-gray-100 rounded-lg">
             <Heart size={20} />
           </Link>
         )}
 
+        {/* Search */}
         {isUser && (
           <div className="relative">
             <button
@@ -122,7 +133,10 @@ export default function Navbar() {
                   placeholder="Search products..."
                   className="flex-1 border rounded-lg px-3 py-2 text-sm outline-none"
                 />
-                <button type="submit" className="px-3 py-2 bg-black text-white rounded-lg text-sm">
+                <button
+                  type="submit"
+                  className="px-3 py-2 bg-black text-white rounded-lg text-sm"
+                >
                   Go
                 </button>
               </form>
@@ -130,6 +144,7 @@ export default function Navbar() {
           </div>
         )}
 
+        {/* Cart */}
         {isUser && (
           <div className="relative">
             <button
@@ -150,10 +165,16 @@ export default function Navbar() {
         {/* Desktop auth buttons */}
         {!token ? (
           <div className="hidden md:flex gap-3">
-            <Link className="py-3 px-6 rounded-md bg-gray-100 text-black hover:bg-gray-200" href="/register">
+            <Link
+              className="py-3 px-6 rounded-md bg-gray-100 text-black hover:bg-gray-200"
+              href="/register"
+            >
               Sign up
             </Link>
-            <Link className="py-3 px-6 rounded-md bg-black text-white hover:opacity-80" href="/login">
+            <Link
+              className="py-3 px-6 rounded-md bg-black text-white hover:opacity-80"
+              href="/login"
+            >
               Sign in
             </Link>
           </div>
@@ -162,7 +183,10 @@ export default function Navbar() {
             <Button
               variant="primary"
               className="py-2 px-5 rounded-md"
-              onClick={() => { cookies.remove("token"); router.push("/login"); }}
+              onClick={() => {
+                cookies.remove("token");
+                router.push("/login");
+              }}
             >
               Log out
             </Button>
@@ -175,10 +199,18 @@ export default function Navbar() {
           onClick={() => setopenmenu(!openmenu)}
         >
           <div className="relative w-5 h-5">
-            <span className={`absolute inset-0 transition-all duration-300 ${openmenu ? "opacity-100 rotate-0" : "opacity-0 rotate-90"}`}>
+            <span
+              className={`absolute inset-0 transition-all duration-300 ${
+                openmenu ? "opacity-100 rotate-0" : "opacity-0 rotate-90"
+              }`}
+            >
               <X size={20} />
             </span>
-            <span className={`absolute inset-0 transition-all duration-300 ${openmenu ? "opacity-0 -rotate-90" : "opacity-100 rotate-0"}`}>
+            <span
+              className={`absolute inset-0 transition-all duration-300 ${
+                openmenu ? "opacity-0 -rotate-90" : "opacity-100 rotate-0"
+              }`}
+            >
               <Menu size={20} />
             </span>
           </div>
@@ -186,12 +218,20 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile menu */}
-      <div className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${openmenu ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+          openmenu ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
         <div className="px-6 py-3 flex flex-col gap-4 bg-gray-400 border-t border-gray-100">
           <ul className="flex flex-col gap-3">
             {navbar.map((nav) => (
               <li key={nav.name}>
-                <NavLink nav={nav} onClick={() => setopenmenu(false)} />
+                <NavLink
+                  nav={nav}
+                  className="block py-2 hover:text-gray-900 hover:bg-white rounded-md px-3 transition-all duration-200"
+                  onClick={() => setopenmenu(false)}
+                />
               </li>
             ))}
           </ul>
@@ -199,10 +239,16 @@ export default function Navbar() {
 
         {!token ? (
           <div className="flex flex-col gap-3">
-            <Link className="py-2 px-5 rounded-md bg-gray-100 text-black text-center" href="/register">
+            <Link
+              className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
+              href="/register"
+            >
               Sign up
             </Link>
-            <Link className="py-2 px-5 rounded-md bg-black text-white text-center" href="/login">
+            <Link
+              className="py-2 px-5 rounded-md bg-black text-white text-center"
+              href="/login"
+            >
               Sign in
             </Link>
           </div>
@@ -210,7 +256,11 @@ export default function Navbar() {
           <div className="flex flex-col gap-3">
             <button
               className="py-2 px-5 rounded-md bg-gray-100 text-black text-center"
-              onClick={() => { cookies.remove("token"); router.push("/login"); }}
+              onClick={() => {
+                cookies.remove("token");
+                router.push("/login");
+                setopenmenu(false);
+              }}
             >
               Log out
             </button>
